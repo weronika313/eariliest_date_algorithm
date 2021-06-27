@@ -10,7 +10,7 @@ class EarliestDateCreator:
         self.max = 0
 
     def convert_str_to_list(self):
-        self.numbers = self.numbers.split('/')
+        self.numbers = self.numbers.split("/")
 
     def change_strings_to_numbers(self):
         self.numbers = [int(number) for number in self.numbers]
@@ -20,14 +20,14 @@ class EarliestDateCreator:
         self.numbers.sort()
 
     def set_min_max_and_mid(self):
-        self.min = self.numbers[0]
-        self.mid = self.numbers[1]
-        self.max = self.numbers[2]
+        self.min, self.mid, self.max = self.numbers
 
     def numbers_are_correct(self):
-        if self.min_number_is_correct() and \
-                self.mid_number_is_correct() and \
-                self.max_number_is_correct():
+        if (
+            self.min_number_is_correct()
+            and self.mid_number_is_correct()
+            and self.max_number_is_correct()
+        ):
 
             return True
 
@@ -47,9 +47,11 @@ class EarliestDateCreator:
             return False
 
     def max_number_is_correct(self):
-        if 2 <= self.max <= 999 or \
-                2000 < self.max <= 2999 or \
-                (self.max == 2000 and self.min != 0):
+        if (
+            2 <= self.max <= 999
+            or 2000 < self.max <= 2999
+            or (self.max == 2000 and self.min != 0)
+        ):
             return True
         else:
             return False
@@ -76,19 +78,28 @@ class EarliestDateCreator:
                 if not self.max_greater_than_num_of_days_in_month(num_days_in_month):
                     if not self.mid_greater_than_num_of_months():
 
-                        return self.format_date(year=self.min, month=self.mid, day=self.max)
+                        return self.format_date(
+                            year=self.min, month=self.mid, day=self.max
+                        )
 
                     else:
 
-                        return self.format_date(year=self.mid, month=self.min, day=self.max)
+                        return self.format_date(
+                            year=self.mid, month=self.min, day=self.max
+                        )
 
                 if self.max_greater_than_num_of_days_in_month(num_days_in_month):
 
-                    if self.mid_less_than_num_of_days_in_month(num_days_in_month) or \
-                            (self.min == 2 and self.mid == 29 and self.year_is_leap_year(self.max)):
-                        return self.format_date(year=self.max, month=self.min, day=self.mid)
+                    if self.mid_less_than_num_of_days_in_month(num_days_in_month) or (
+                        self.min == 2
+                        and self.mid == 29
+                        and self.year_is_leap_year(self.max)
+                    ):
+                        return self.format_date(
+                            year=self.max, month=self.min, day=self.mid
+                        )
 
-        return 'is illegal'
+        return "is illegal"
 
     def max_greater_than_num_of_days_in_month(self, num_of_days):
         if self.max > num_of_days:
